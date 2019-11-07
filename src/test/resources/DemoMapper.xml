@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DemoMapper">
+  <resultMap id="BaseResultMap" type="Demo">
+    <id column="demo_id" jdbcType="BIGINT" property="demoId" />
+    <result column="VERSION" jdbcType="INTEGER" property="version" />
+    <result column="REMARKS" jdbcType="VARCHAR" property="remarks" />
+    <result column="CREATOR" jdbcType="VARCHAR" property="creator" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="MODIFIER" jdbcType="VARCHAR" property="modifier" />
+    <result column="UPDATE_TIME" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+</mapper>

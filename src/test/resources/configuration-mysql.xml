@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+	<settings>
+		<setting name="cacheEnabled" value="true" />
+		<setting name="lazyLoadingEnabled" value="true" />
+		<setting name="multipleResultSetsEnabled" value="true" />
+		<setting name="useColumnLabel" value="true" />
+		<setting name="useGeneratedKeys" value="false" />
+		<setting name="defaultExecutorType" value="SIMPLE" />
+		<setting name="defaultStatementTimeout" value="5" />
+		<setting name="mapUnderscoreToCamelCase" value="true" />
+	</settings>
+	<typeAliases>
+	</typeAliases>
+
+	<plugins>
+		<!-- 相同类型的插件，配置在后面的先执行。
+		 KeyGeneratePlugin必须在加密插件之前执行。
+		 -->
+		<plugin interceptor="org.sirenia.repo.plugin.PagePlugin">
+			<property name="dialect" value="mysql" />
+			<property name="pageSqlId" value=".*ByPage" />
+		</plugin>
+		<plugin interceptor="org.sirenia.repo.plugin.KeyGeneratePlugin">
+		</plugin>
+		<plugin interceptor="org.sirenia.repo.plugin.AutoSqlExecutorPlugin">
+		</plugin>
+	</plugins>
+
+	<environments default="development">
+		<!-- <environment id="development"> <transactionManager type="JDBC" /> 
+			<dataSource type="POOLED"> <property name="driver" value="org.postgresql.Driver" 
+			/> <property name="url" value="jdbc:postgresql://localhost:5432/test" /> 
+			<property name="username" value="postgres" /> <property name="password" value="123456" 
+			/> </dataSource> </environment> -->
+		<environment id="development">
+			<transactionManager type="JDBC" />
+			<!-- <dataSource type="POOLED">
+				<property name="driver" value="com.mysql.jdbc.Driver" />
+				<property name="url"
+					value="jdbc:mysql://10.118.242.14:3306/jyd?characterEncoding=UTF-8" />
+				<property name="username" value="jyd" />
+				<property name="password" value="jyd" />
+				<property name="poolMaximumActiveConnections" value="1"/>
+				<property name="poolMaximumIdleConnections" value="1"/>
+			</dataSource> -->
+			<dataSource type="druid.DruidDataSourceFactory">
+				<property name="druid.url" value="jdbc:mysql://localhost:3306/xx?characterEncoding=UTF-8" />
+		        <property name="druid.username" value="jyd" />
+		        <property name="druid.password" value="jyd" />
+		        <property name="druid.password" value="jyd" />
+		        <!-- 初始化连接大小 -->
+		        <property name="druid.initialSize" value="1" />
+		        <!-- 连接池最大使用连接数量 -->
+		        <property name="druid.maxActive" value="2" />
+		        <!-- 连接池最小空闲 -->
+		        <property name="druid.minIdle" value="1" />
+		        <!-- 获取连接最大等待时间 -->
+		        <property name="druid.maxWait" value="6000" />
+		        <property name="druid.poolPreparedStatements" value="false" />
+		        <property name="druid.maxPoolPreparedStatementPerConnectionSize" value="200" />
+		        <!-- 用来检测有效sql -->
+		        <property name="druid.validationQuery" value="false" />
+		        <property name="druid.testOnBorrow" value="false" />
+		        <property name="druid.testOnReturn" value="false" />
+		        <property name="druid.testWhileIdle" value="true" />
+		        <!-- 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒 -->
+		        <property name="druid.timeBetweenEvictionRunsMillis" value="1000" />
+		        <!-- 配置一个连接在池中最小生存的时间，单位是毫秒 -->
+		        <property name="druid.minEvictableIdleTimeMillis" value="30000" />
+		        <!-- 打开removeAbandoned功能 -->
+		        <property name="druid.removeAbandoned" value="true" />
+		        <!-- 1800秒，也就是30分钟 -->
+		        <property name="druid.removeAbandonedTimeout" value="10" />
+		        <!-- 关闭abanded连接时输出错误日志 -->
+		        <property name="druid.logAbandoned" value="true" />
+		        <!-- 监控数据库 -->
+		        <property name="druid.filters" value="mergeStat" />
+			</dataSource>
+		</environment>
+	</environments>
+	<mappers>
+		<mapper resource="DemoMapper.xml"></mapper>
+	</mappers>
+</configuration>
