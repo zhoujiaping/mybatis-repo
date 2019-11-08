@@ -18,12 +18,13 @@ where ${conf.idResultMapping.column} = #{id,jdbcType=${conf.idResultMapping.jdbc
     }
 
     String insert() {
+        def columns = conf.resultMappings*.column.join(",")
         //getMappedColumns和getResultMappings的字段顺序不是一致的。
         def values = conf.resultMappings.collect{
             "#{${it.property},jdbcType=${it.jdbcType}}"
         }.join(",")
         return """<script>
-insert into ${conf.tablename}(${conf.resultMappings*.column})values(${values});
+insert into ${conf.tablename}(${columns})values(${values});
 </script>
 """
     }
@@ -31,10 +32,10 @@ insert into ${conf.tablename}(${conf.resultMappings*.column})values(${values});
     String insertSelective() {
         def columns = conf.resultMappings.collect{
             "<if test='${it.property}!=null'>${it.column},</if>"
-        }
+        }.join('')
         def values = conf.resultMappings.collect{
             "<if test='${it.property}!=null'>#{${it.property},jdbcType=${it.jdbcType}},</if>"
-        }.join(",")
+        }.join('')
         return """<script>
 insert into ${conf.tablename}
 <trim prefix='(' suffix=')' suffixOverrides=','>${columns}</trim>
@@ -45,9 +46,11 @@ values
     }
 
     String updateByPrimaryKeySelective() {
-        def setters = conf.resultMappings.collect {
+        def setters = conf.resultMappings.findAll{
+            !it.column.equalsIgnoreCase(conf.idResultMapping.column)
+        }.collect {
             "<if test='${it.property}!=null'>${it.column} = #{${it.property},jdbcType=${it.jdbcType}},</if>"
-        }
+        }.join('')
         return """<script>
 update ${conf.tablename}
 <set>${setters}</set>
@@ -58,10 +61,12 @@ where ${conf.idResultMapping.column} = #{${conf.idResultMapping.property},jdbcTy
 
     String updateByPrimaryKeySelectiveAndVersion() {
         def setters = conf.resultMappings.findAll{
-            it.column!=conf.optiLockColumn
+            def isId = it.column.equalsIgnoreCase(conf.idResultMapping.column)
+            def isOpti = it.column.equalsIgnoreCase(conf.optiLockColumn)
+            !isId && !isOpti
         }.collect {
             "<if test='${it.property}!=null'>${it.column} = #{${it.property},jdbcType=${it.jdbcType}},</if>"
-        }
+        }.join('')
         return """<script>
 update ${conf.tablename}
 <set>${setters} ${conf.optiLockColumn}=${conf.optiLockColumn}+1</set>
@@ -73,7 +78,7 @@ and ${conf.optiLockResultMapping.column} = #{${conf.optiLockResultMapping.proper
 
     String updateByPrimaryKey() {
         def setters = conf.resultMappings.findAll{
-            it.column!=conf.optiLockColumn
+            !it.column.equalsIgnoreCase(conf.idResultMapping.column)
         }.collect {
             "${it.column} = #{${it.property},jdbcType=${it.jdbcType}}"
         }.join(",")
@@ -87,7 +92,9 @@ where ${conf.idResultMapping.column} = #{${conf.idResultMapping.property},jdbcTy
 
     String updateByPrimaryKeyAndVersion() {
         def setters = conf.resultMappings.findAll{
-            it.column!=conf.optiLockColumn
+            def isId = it.column.equalsIgnoreCase(conf.idResultMapping.column)
+            def isOpti = it.column.equalsIgnoreCase(conf.optiLockColumn)
+            !isId && !isOpti
         }.collect {
             "<if test='${it.property}!=null'>${it.column} = #{${it.property},jdbcType=${it.jdbcType}},</if>"
         }
@@ -101,11 +108,12 @@ and ${conf.optiLockResultMapping.column} = #{${conf.optiLockResultMapping.proper
     }
 
     String batchInsert() {
+        def columns = conf.resultMappings*.column.join(',')
         def values = conf.resultMappings.collect{
-            "#{${it.property},jdbcType=${it.jdbcType}}"
+            "#{record.${it.property},jdbcType=${it.jdbcType}}"
         }.join(",")
         return """<script>
-insert into ${conf.tablename}(${conf.resultMappings*.column})values
+insert into ${conf.tablename}(${columns})values
 <foreach collection='recordList' item='record' separator=','>(${values})</foreach>;
 </script>
 """

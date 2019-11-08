@@ -4,7 +4,6 @@
   <resultMap id="BaseResultMap" type="Demo">
     <id column="demo_id" jdbcType="BIGINT" property="demoId" />
     <result column="VERSION" jdbcType="INTEGER" property="version" />
-    <result column="REMARKS" jdbcType="VARCHAR" property="remarks" />
     <result column="CREATOR" jdbcType="VARCHAR" property="creator" />
     <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
     <result column="MODIFIER" jdbcType="VARCHAR" property="modifier" />

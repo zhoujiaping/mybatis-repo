@@ -1,6 +1,6 @@
 class Demo {
-    long demoId
-    int version
+    Long demoId
+    Integer version
     String creator
     Date createTime
     String modifier

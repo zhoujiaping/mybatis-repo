@@ -32,7 +32,7 @@ class XMLMapperConf {
         conf.resultMappings = conf.resultMap.resultMappings
         conf.optiLockColumn = table.optiLockColumn()
         conf.optiLockResultMapping = conf.resultMappings.find{
-            it.column == conf.optiLockColumn
+            it.column.toLowerCase() == conf.optiLockColumn.toLowerCase()
         }
         return conf
     }

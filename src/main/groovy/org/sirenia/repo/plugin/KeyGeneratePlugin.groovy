@@ -94,8 +94,8 @@ class KeyGeneratePlugin implements Interceptor {
         if (kg in NoKeyGenerator) {
             kg = new MyJdbc3KeyGenerator()
             ReflectUtil.setValueByFieldName(mappedStatement, "keyGenerator", kg)
-            ReflectUtil.setValueByFieldName(mappedStatement, "keyProperties", [keyProperty])
-            ReflectUtil.setValueByFieldName(mappedStatement, "keyColumns", [keyColumn])
+            ReflectUtil.setValueByFieldName(mappedStatement, "keyProperties", [keyProperty] as String[])
+            ReflectUtil.setValueByFieldName(mappedStatement, "keyColumns", [keyColumn] as String[])
         }
         statementIdsDealedKeyGen.put(stmtId, "")
     }
