@@ -6,11 +6,15 @@ plugins {
 group 'org.sirenia'
 version '1.0-SNAPSHOT'
 
+apply plugin: 'maven'
+apply plugin: 'maven-publish'//将源码一起打包，需要时添加
+
 sourceCompatibility = 1.8
 
 [compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
 
 repositories {
+    mavenLocal() // 使用本地仓库
     maven { url 'http://maven.aliyun.com/nexus/content/groups/public/' }
     maven { url 'http://maven.aliyun.com/nexus/content/repositories/jcenter'}
 }
@@ -29,8 +33,25 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
     testCompile 'com.alibaba:druid:1.1.6'
 }
+// 指定上传的路径
+def localMavenRepo = 'file://' + new File(System.getProperty('user.home'), '.m2/repository').absolutePath
 
+// 上传Task，Gradle会生成并上传pom.xml文件。https://cloud.tencent.com/developer/article/1032622
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: localMavenRepo)
+            //构造项目的Pom文件
+            pom.project {
+                name = project.name
+                packaging = 'jar'
+                description = 'description'
+            }
+        }
+    }
+}
 
+/*
 task "create-dirs" doLast {
     sourceSets*.java.srcDirs*.each {
         it.mkdirs()
@@ -41,4 +62,4 @@ task "create-dirs" doLast {
     sourceSets*.resources.srcDirs*.each{
         it.mkdirs()
     }
-}
+}*/
