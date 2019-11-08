@@ -17,7 +17,6 @@ import org.sirenia.repo.constant.AutoSql
  * 由于加解密需要加注解，所以如果需要重载BaseMapper的方法，并加上对应的注解。
  * 2、Table注解用于支持BaseMapper。optiLockColumn属性为乐观锁字段名，默认为version。
  * 3、KeyGen注解，用于支持新增并返回主键。目前只支持mysql，userGeneratorKeys。
- * @author 01375156
  */
 interface BaseMapper<ENTITY, PK> {
 
