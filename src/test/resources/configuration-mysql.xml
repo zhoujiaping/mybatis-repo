@@ -48,10 +48,9 @@ PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
 				<property name="poolMaximumIdleConnections" value="1"/>
 			</dataSource> -->
 			<dataSource type="druid.DruidDataSourceFactory">
-				<property name="druid.url" value="jdbc:mysql://localhost:3306/xx?characterEncoding=UTF-8" />
-		        <property name="druid.username" value="jyd" />
-		        <property name="druid.password" value="jyd" />
-		        <property name="druid.password" value="jyd" />
+				<property name="druid.url" value="jdbc:mysql://localhost:3306/test?characterEncoding=UTF-8" />
+		        <property name="druid.username" value="root" />
+		        <property name="druid.password" value="" />
 		        <!-- 初始化连接大小 -->
 		        <property name="druid.initialSize" value="1" />
 		        <!-- 连接池最大使用连接数量 -->
