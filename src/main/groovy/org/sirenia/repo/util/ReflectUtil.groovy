@@ -1,14 +1,12 @@
 package org.sirenia.repo.util
 
-import com.sun.istack.internal.NotNull
-
 import java.lang.reflect.Field
 
 /**
  * 反射的帮助类
  */
 class ReflectUtil {
-    static Field getFieldByFieldName(@NotNull Object obj,@NotNull String fieldName) {
+    static Field getFieldByFieldName(Object obj, String fieldName) {
         for (Class superClass = obj.class; superClass != Object; superClass = superClass.superclass) {
             def field = superClass.declaredFields.find{
                 it.name == fieldName
@@ -20,7 +18,7 @@ class ReflectUtil {
         throw new RuntimeException("属性：" + fieldName + "未找到")
     }
 
-    static def getValueByFieldName(@NotNull Object obj,@NotNull String fieldName) {
+    static def getValueByFieldName(Object obj, String fieldName) {
         def field = getFieldByFieldName(obj, fieldName)
         def value
         if (field.accessible) {
@@ -33,7 +31,7 @@ class ReflectUtil {
         return value
     }
 
-    static void setValueByFieldName(@NotNull Object obj,@NotNull String fieldName, value) {
+    static void setValueByFieldName(Object obj,String fieldName, value) {
         Field field = obj.class.getDeclaredField(fieldName)
         if (field.accessible) {
             field.set(obj, value)
@@ -47,7 +45,7 @@ class ReflectUtil {
     /**
      * 处理有多个插件时的情况
      */
-    static def unwrapProxy(@NotNull Object target) {
+    static def unwrapProxy(Object target) {
         def isProxy = true
         while (isProxy) {
             Class targetClazz = target.class

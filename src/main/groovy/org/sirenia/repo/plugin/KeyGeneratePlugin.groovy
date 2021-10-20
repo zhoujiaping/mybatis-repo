@@ -1,6 +1,5 @@
 package org.sirenia.repo.plugin
 
-import com.sun.istack.internal.NotNull
 import org.apache.ibatis.executor.Executor
 import org.apache.ibatis.executor.keygen.NoKeyGenerator
 import org.apache.ibatis.mapping.MappedStatement
@@ -51,7 +50,7 @@ class KeyGeneratePlugin implements Interceptor {
         return ivk.proceed()
     }
 
-    private synchronized void dealKeyGen(MappedStatement mappedStatement, @NotNull Object parameterObject){
+    private synchronized void dealKeyGen(MappedStatement mappedStatement, Object parameterObject){
         def stmtId = mappedStatement.id
         if (statementIdsDealedKeyGen.containsKey(stmtId)) {
             return

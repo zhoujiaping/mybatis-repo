@@ -3,7 +3,6 @@ package org.sirenia.repo.keygen
 import org.apache.ibatis.executor.Executor
 import org.apache.ibatis.executor.keygen.Jdbc3KeyGenerator
 import org.apache.ibatis.mapping.MappedStatement
-import org.apache.ibatis.reflection.MetaObject
 import org.apache.ibatis.reflection.SystemMetaObject
 import org.sirenia.repo.util.ParamObjectUtil
 
